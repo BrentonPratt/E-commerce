@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import ProductBox from './ProductBox';
-import SearchBar from './SearchBar';
 import{
     BrowserRouter as Router,
     Route,
     Link,
-    Switch
+    Switch,
+    Redirect
 } from 'react-router-dom';
 import Cart from './Cart'
+import { Provider } from "react-redux";
+import store from './Store';
 
 
 class App extends Component {
@@ -22,35 +24,31 @@ class App extends Component {
                     <Link to='/products' className='item'>
                         Products
                     </Link>
-                    <Link to='/search' className='item'>
-                        Search
-                    </Link>
                     <Link to='/cart' className='item'>
                         Shopping Cart
                     </Link>
                 </div>
                 <Switch>
-                    <Route
-                        path='/products'
-                        render={(props) => <ProductBox {...props} />}
-                    />
-                    <Route path='/company/:companyID' render={() => (
+                    <Route exact path='/products' component={ProductBox}/>
+                    <Route path='/products/:id' render={() => (
                         <div>Multiple Companies</div>
                     )} />
-                    <Route path='/search' component={SearchBar} />
                     <Route path='/cart' component={Cart}/>
+                    <Redirect from="/" to="/products" />
                     <Route render={() => (
                         <div>404 NOT FOUND</div>
                     )}/>
                 </Switch>
             </div>
         </Router>
-        /*<>
-            <SearchBar productsToSearch={products}/>
-            <ProductBox productsFromApi={products}/>
-        </>*/
     );
   }
 }
 
-export default App;
+const WrappedApp = () => (
+    <Provider store={store}>
+        <App/>
+    </Provider>
+);
+
+export default WrappedApp;

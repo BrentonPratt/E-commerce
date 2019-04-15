@@ -1,42 +1,44 @@
 import React, { Component } from 'react';
 import SearchBar from "./SearchBar";
 import axios from "axios";
+import{
+    BrowserRouter as Router,
+    Route,
+    Link,
+    Switch
+} from 'react-router-dom';
+import store from './Store';
+import { connect } from "react-redux";
+import { fetchProducts } from "./Api";
 
 class ProductBox extends Component{
 
-    state = {
-        products: []
-    };
-
-    componentDidMount(){
-        axios.get('https://my-json-server.typicode.com/tdmichaelis/typicode/products')
-            .then((response) => {
-                this.setState({
-                    products: response.data
-                });
-                console.log(response.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+    componentDidMount() {
+        this.props.dispatch(fetchProducts());
     }
 
-    render() {
+        render() {
 
-        let products = this.state.products;
+        const { error, products } = this.props;
+
+        if (error) {
+            return <div>Error! {error.message}</div>;
+        }
 
         return(
             <>
-                <SearchBar productsToSearch={products}/>
+                <SearchBar/>
                 <div className='ui cards'>
                     {products.map(product =>
                         <div className='ui card' key={product.id}>
-                            <h2 className='ui header'>{product.title}</h2>
-                            <img src={product.img} alt='product' className='ui small image'/>
-                            <div>Product Details: {product.description}</div>
+                            <Link to='/products/:id' className='item'>
+                                <h2 className='ui header'>{product.title}</h2>
+                                <img src={product.img} alt='product' className='ui small image'/>
+                            </Link>
                             <div>${product.price}</div>
                             <div className='ui heart rating'>Rating: {product.rating}</div>
                             <div>Product Category: {product.category}</div>
+                            <button onClick={this.addToCart} className='ui primary button'>Add to cart</button>
                         </div>
                     )}
                 </div>
@@ -45,4 +47,9 @@ class ProductBox extends Component{
     }
 }
 
-export default ProductBox
+const mapStateToProps = state => ({
+    products: state.api.items,
+    error: state.api.error
+});
+
+export default connect(mapStateToProps)(ProductBox);

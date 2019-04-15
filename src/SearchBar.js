@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import store from './Store';
+import { connect } from "react-redux";
+import {fetchProducts} from "./Api";
 
 class SearchBar extends Component {
+    state = {
+        value: '',
+    };
 
-    constructor(props){
-        super(props);
-        this.state = {
-            value: '',
-
-        }
+    componentDidMount() {
+        this.props.dispatch(fetchProducts());
     }
 
     onChange = (e) => {
@@ -16,21 +18,38 @@ class SearchBar extends Component {
         });
     };
 
-    handleSubmit = () => {
-        this.props.onSubmit(this.state.value);
+    handleSubmit = (event) => {
+        event.preventDefault();
+        this.onSearch(this.state.value);
         this.setState({
             value: '',
         });
     };
 
-    onSearch = () => {
+    onSearch = (result) => {
         let reg = /i/g;
-        for (let i = 0; this.props.productsToSearch > i; i++) {
-
+        let arrRes = [];
+        console.log(result);
+        let products = store.getState().products;
+        for (let i = 0; products > i; i++) {
+            if (products[i].title.match(reg)) {
+                arrRes.push(products[i]);
+                store.dispatch({
+                    type: 'ADD_SEARCH_RESULT',
+                    arrRes: arrRes,
+                    search: result,
+                });
+            }
         }
     };
 
     render() {
+        const { error, products } = this.props;
+
+        if (error) {
+            return <div>Error! {error.message}</div>;
+        }
+
         return(
             <form className='ui input focus'>
                 <input type='text' placeholder='Search' value={this.state.value} onChange={this.onChange}/>
@@ -40,4 +59,11 @@ class SearchBar extends Component {
     }
 }
 
-export default SearchBar
+const mapStateToProps = state => ({
+    resArr: state.searcher.resArr,
+    search: state.searcher.search,
+    products: state.api.items,
+    error: state.api.error
+});
+
+export default connect(mapStateToProps)(SearchBar)
