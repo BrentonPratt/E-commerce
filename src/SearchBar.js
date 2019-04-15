@@ -27,11 +27,11 @@ class SearchBar extends Component {
     };
 
     onSearch = (result) => {
-        let reg = /i/g;
+        let reg = new RegExp(result, 'ig');
         let arrRes = [];
-        console.log(result);
-        let products = store.getState().products;
-        for (let i = 0; products > i; i++) {
+        let products = store.getState().api.items;
+        console.log(products);
+        for (let i = 0; i < products.length; i++) {
             if (products[i].title.match(reg)) {
                 arrRes.push(products[i]);
                 store.dispatch({
@@ -39,6 +39,7 @@ class SearchBar extends Component {
                     arrRes: arrRes,
                     search: result,
                 });
+                console.log(arrRes);
             }
         }
     };
@@ -60,7 +61,7 @@ class SearchBar extends Component {
 }
 
 const mapStateToProps = state => ({
-    resArr: state.searcher.resArr,
+    arrRes: state.searcher.arrRes,
     search: state.searcher.search,
     products: state.api.items,
     error: state.api.error
