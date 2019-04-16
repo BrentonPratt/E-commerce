@@ -17,6 +17,12 @@ class App extends Component {
 
   render() {
 
+      const {error} = this.props;
+
+      if (error) {
+          return <div>Error! {error.message}</div>;
+      }
+
     return (
         <Router>
             <div>
@@ -31,7 +37,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path='/products' component={ProductBox}/>
                     <Route path='/products/:id' render={() => (
-                        <div>Multiple Companies</div>
+                        <div>Product Details</div>
                     )} />
                     <Route path='/cart' component={Cart}/>
                     <Redirect from="/" to="/products" />

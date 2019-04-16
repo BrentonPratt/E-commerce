@@ -45,7 +45,7 @@ class SearchBar extends Component {
     };
 
     render() {
-        const { error, products } = this.props;
+        const { error } = this.props;
 
         if (error) {
             return <div>Error! {error.message}</div>;

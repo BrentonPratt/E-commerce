@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from "./SearchBar";
 import{
-    BrowserRouter as Router,
-    Route,
     Link,
-    Switch
 } from 'react-router-dom';
 import { connect } from "react-redux";
 import { fetchProducts } from "./Api";
@@ -18,7 +15,6 @@ class ProductBox extends Component{
         render() {
 
             const {error, products, arrRes, search} = this.props;
-            console.log(arrRes);
 
             if (error) {
                 return <div>Error! {error.message}</div>;
@@ -29,7 +25,7 @@ class ProductBox extends Component{
                         <div className='ui cards'>
                             {arrRes.map(product =>
                                 <div className='ui card' key={product.id}>
-                                    <Link to='/products/:id' className='item'>
+                                    <Link to={`/products/${product.id}`} className='item'>
                                         <h2 className='ui header'>{product.title}</h2>
                                         <img src={product.img} alt='product' className='ui small image'/>
                                     </Link>
@@ -49,7 +45,7 @@ class ProductBox extends Component{
                     <div className='ui cards'>
                         {products.map(product =>
                             <div className='ui card' key={product.id}>
-                                <Link to='/products/:id' className='item'>
+                                <Link to={`/products/${product.id}`} className='item'>
                                     <h2 className='ui header'>{product.title}</h2>
                                     <img src={product.img} alt='product' className='ui small image'/>
                                 </Link>
