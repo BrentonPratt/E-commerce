@@ -8,7 +8,8 @@ import{
     Switch,
     Redirect
 } from 'react-router-dom';
-import Cart from './Cart'
+import Cart from './Cart';
+import ProductDetails from './ProductDetails';
 import { Provider } from "react-redux";
 import store from './Store';
 
@@ -36,9 +37,7 @@ class App extends Component {
                 </div>
                 <Switch>
                     <Route exact path='/products' component={ProductBox}/>
-                    <Route path='/products/:id' render={() => (
-                        <div>Product Details</div>
-                    )} />
+                    <Route path='/products/:id' component={ProductDetails}/>
                     <Route path='/cart' component={Cart}/>
                     <Redirect from="/" to="/products" />
                     <Route render={() => (

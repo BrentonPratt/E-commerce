@@ -5,6 +5,7 @@ import{
 } from 'react-router-dom';
 import { connect } from "react-redux";
 import { fetchProducts } from "./Api";
+import './ProductBox.css';
 
 class ProductBox extends Component{
 
@@ -25,14 +26,13 @@ class ProductBox extends Component{
                         <div className='ui cards'>
                             {arrRes.map(product =>
                                 <div className='ui card' key={product.id}>
-                                    <Link to={`/products/${product.id}`} className='item'>
+                                    <Link to={`/products/${product.id}`} className='item' key={product.id}>
                                         <h2 className='ui header'>{product.title}</h2>
                                         <img src={product.img} alt='product' className='ui small image'/>
                                     </Link>
                                     <div>${product.price}</div>
                                     <div className='ui heart rating'>Rating: {product.rating}</div>
                                     <div>Product Category: {product.category}</div>
-                                    <button onClick={this.addToCart} className='ui primary button'>Add to cart</button>
                                 </div>
                             )}
                         </div>
@@ -52,7 +52,6 @@ class ProductBox extends Component{
                                 <div>${product.price}</div>
                                 <div className='ui heart rating'>Rating: {product.rating}</div>
                                 <div>Product Category: {product.category}</div>
-                                <button onClick={this.addToCart} className='ui primary button'>Add to cart</button>
                             </div>
                         )}
                     </div>
