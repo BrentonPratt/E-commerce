@@ -28,8 +28,8 @@ class ProductBox extends Component{
                                 <div className='ui card' key={product.id}>
                                     <Link to={`/products/${product.id}`} className='item' key={product.id}>
                                         <h2 className='ui header'>{product.title}</h2>
-                                        <img src={product.img} alt='product' className='ui small image'/>
                                     </Link>
+                                    <img src={product.img} alt='product' className='ui image'/>
                                     <div>${product.price}</div>
                                     <div className='ui heart rating'>Rating: {product.rating}</div>
                                     <div>Product Category: {product.category}</div>
@@ -47,7 +47,7 @@ class ProductBox extends Component{
                             <div className='ui card' key={product.id}>
                                 <Link to={`/products/${product.id}`} className='item'>
                                     <h2 className='ui header'>{product.title}</h2>
-                                    <img src={product.img} alt='product' className='ui small image'/>
+                                    <img src={product.img} alt='product' className='ui image'/>
                                 </Link>
                                 <div>${product.price}</div>
                                 <div className='ui heart rating'>Rating: {product.rating}</div>
